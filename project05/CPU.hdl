@@ -39,24 +39,31 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
      PARTS:
-        Mux16(a=instruction, b=ALUout, sel=instruction[15], out=fmux);
-        Not(in=instruction[15], out=not15);
+        Mux16(a=instruction, b=ALUout, sel=instruction[15], out=fmux);//first mux
+
+        Not(in=instruction[15], out=not15);//load A logic
         Or(a=not15, b=instruction[5], out=loadA);
         ARegister(in=fmux, load=loadA, out=toMux2, out[0..14]=addressM, out=toPC);
-        Mux16(a=toMux2, b=inM, sel=instruction[12], out=toALU);
-        And(a=instruction[4], b=instruction[15], out=loadD);
-        DRegister(in=ALUout, load=loadD, out=out);
-        ALU(x=out, y=toALU, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outM, out=ALUout, zr=z, ng=n);
-        Or(a=instruction[3], b=instruction[3], out=pwriteM);
-        And(a=pwriteM, b=instruction[15], out=writeM);
-        Not(in=n, out=nn);
-        And(a=n, b=instruction[2], out=t1);
-        And(a=nn, b=instruction[0], out=t2);
-        And(a=z, b=instruction[1], out=t3);
-        Or(a=t1, b=t2, out=pl);
-        Or(a=pl, b=t3, out=pll);
-        And(a=pll, b=instruction[15], out=fin);
 
+        Mux16(a=toMux2, b=inM, sel=instruction[12], out=toALU);//secound mux
+
+        And(a=instruction[4], b=instruction[15], out=loadD);//load D logic
+        DRegister(in=ALUout, load=loadD, out=out);
+
+        ALU(x=out, y=toALU, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outM, out=ALUout, zr=z, ng=n);//ALU du
+        
+        Or(a=instruction[3], b=instruction[3], out=pwriteM);//Write M logic
+        And(a=pwriteM, b=instruction[15], out=writeM);
+        
+        Not(in=n, out=nn);// JUMP logic
+        Not(in=z, out=notz);
+        And(a=n, b=instruction[2], out=t1);
+        And(a=nn, b=instruction[0], out=pt2);
+        And(a=pt2, b=notz, out=t2);
+        And(a=z, b=instruction[1], out=t3);
+        Or(a=t1, b=t2, out=p);
+        Or(a=p, b=t3, out=pll);
+        And(a=pll, b=instruction[15], out=fin);
 
         PC(in=toPC, inc=true, load=fin, reset=reset, out[0..14]=pc);
 }
