@@ -59,7 +59,7 @@ CHIP CPU {
         Not(in=z, out=notz);
         And(a=n, b=instruction[2], out=t1);
         And(a=nn, b=instruction[0], out=pt2);
-        And(a=pt2, b=notz, out=t2);
+        And(a=pt2, b=notz, out=t2);//so it doesn't jump when zero because zero is not neg but not greater than zero, I am so tired that I am probably making little sence right now and this bug was a pain to find, if I had failed one of the CPU tests it would have been easier to find, maybe, but I passed them all, why because the tests are probably flawed. I even downloaded the extra tests and passed those. Bla
         And(a=z, b=instruction[1], out=t3);
         Or(a=t1, b=t2, out=p);
         Or(a=p, b=t3, out=pll);
