@@ -18,13 +18,20 @@ asm = File.new(ARGV[0], "r")
 f2name = ARGV[0].gsub(/\.asm/,".hack")
 #puts f2name
 hack = File.new(f2name, "w")
+#made sure everything was working in readind
+=begin
 asm.each do |i|
 	puts i
 end
+=end
+
 a = Aline.new
 a.testHash('R0')
 a.testHash('R11')
 a.testHash('R14')
+a.testHash('test')
+a.testHash('test')
+
 
 
 

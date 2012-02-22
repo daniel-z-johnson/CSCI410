@@ -12,7 +12,7 @@ class Cline
 			'AMD'  => '111'
 		}
 
-		@jump => {
+		@jump = {
 			'JGT' => '001',
 			'JEQ' => '010',
 			'JGE' => '011',
@@ -22,7 +22,7 @@ class Cline
 			'JMP' => '111'
 		}
 
-		@op => {
+		@op = {
 			'0'   => '101010',
 			'1'   => '111111',
 			'-1'  => '111010',
@@ -41,7 +41,8 @@ class Cline
 			'Y-D' => '000111',
 			'D&Y' => '000000',
 			'D|Y' => '010101'
-		}
+		} #same bits for instruction that can be A or M will take care of A or M in method
+		#being lazy is awesome
 
 	end
 end
