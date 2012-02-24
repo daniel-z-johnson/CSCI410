@@ -1,4 +1,6 @@
 	AM=A
 	AM=D
-	AM=-1
+	AM=-1;JLT
 	(WER)
+	D;JMP
+	0;JEQ

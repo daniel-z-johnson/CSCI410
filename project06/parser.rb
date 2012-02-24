@@ -21,10 +21,10 @@ class Parser
 	def generate_sybols
 		line_num = 0
 		for i in @asm
-			valid = isValid?(i)
-			if valid
+			i.strip! #I enjoy strippers huray, but it makes the regular expressions easier
+			if isValid?(i)
 				line_num += 1
-			elsif /$(\w*)/.match(i)
+			elsif /^\((\w*)\)/.match(i)
 				a.add_address_symbol($1,line_num)
 			end
 
@@ -33,18 +33,22 @@ class Parser
 
 	def isValid?(line)
 		line.strip!
-		if /^\/\//.match(line)
-			puts line
+		if /^\/\//.match(line) or line == "" or /^\((\w*)\)/.match(line)
+			puts "#{line} bla"
+			#puts "nil2" if line == "" or line == nil
 			return false
-		elsif /@(\W*)/.match(line)
+
+		elsif /@(\w*)/.match(line)
 			puts "matched #{$1}"
 			return true
-		elsif /([AMD]{1,3}=)?([AMD+-10]{1,3});?(J[GTENQMP]{1,2})?/.match(line)
-			puts "matched #{$1} 2 #{$2} 3 #{$3}"
+		elsif /([AMD]{1,3})?=?([AMD+-10]{1,3});?(J[GTENQMPL]{1,2})?/.match(line)
+			#$1.gsub!("=","") if $1
+			puts "matched 1 #{$1} 2 #{$2} 3 #{$3}"
+			#puts "nil" if $1 == nil
 			return true
 
 		else
-			puts "Invalid Instruction or comment, #{lien}"
+			puts "Invalid line #{line}"
 		end
 
 	end

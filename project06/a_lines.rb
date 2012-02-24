@@ -59,6 +59,9 @@ class Aline
 	end
 
 	def instruction(asm)
+		if /@[0-9]*\w*/.match(asm)
+			puts "In valid a instruction #{asm}"
+		end
 		/@([0-9]*)/.match(asm)
 		if $1 != ""
 			intstruct = '0' + toBin15($1.to_i)
