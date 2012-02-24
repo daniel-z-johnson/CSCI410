@@ -30,35 +30,43 @@ class Aline
 		}
 	end
 
-	#testing proof of concept
+	#testing proof of concept and now the decoder for symbols
 	def testHash(a)
 
-		if @mem_hash.has_key?(a)
-			puts @mem_hash[a]
-		else
+		unless @mem_hash.has_key?(a)
 			@mem_hash[a] = @next_empty
 			@next_empty += 1
 		end
-		@mem_hash[a]
+		toBin15 @mem_hash[a].to_i
 
 	end
 
-	def toBin(n)
+	def toBin15(n) #need bin numbers to be 15 bits for a instructions
+		bin = ''
+  		while bin.length < 15
+    		bin = (n%2).to_s + bin
+  			n /= 2
+  		end
+  		#p bin
+  		bin
 	end
 
 	#adds symbol that refers to memadress
-	def addAddressSymbol(symbol, address)
+	def add_address_symbol(symbol, address)
 
 		@mem_hash[symbol] = address
 
 	end
 
 	def instruction(asm)
-		/@(\w*)/.match(asm.chomp)
-
-
+		/@([0-9]*)/.match(asm)
+		if $1 != ""
+			intstruct = '0' + toBin15($1.to_i)
+		else
+			/@(\w*)/.match(asm)
+			intstruct = '0' + testHash($1)
+		end
+		intstruct
 	end
-
-
 
 end

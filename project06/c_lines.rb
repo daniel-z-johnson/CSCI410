@@ -3,6 +3,7 @@ class Cline
 	def ininialize
 
 		@dest = {
+			'nil'  => '000',
 			'M'    => '001',
 			'D'    => '010',
 			'A'    => '100',
@@ -13,6 +14,7 @@ class Cline
 		}
 
 		@jump = {
+			nil   => '000',
 			'JGT' => '001',
 			'JEQ' => '010',
 			'JGE' => '011',
@@ -23,6 +25,7 @@ class Cline
 		}
 
 		@op = {
+			nil   => '000000',
 			'0'   => '101010',
 			'1'   => '111111',
 			'-1'  => '111010',
@@ -43,6 +46,30 @@ class Cline
 			'D|Y' => '010101'
 		} #same bits for instruction that can be A or M will take care of A or M in method
 		#being lazy is awesome
+	end
+
+	def jump_bits(jjj)
+		@jump[jjj]
+
+	def dest_bits(ddd)
+		@dest[ddd]
+	end
+
+	def op_bits(op_code)
+		if op_bits.index(/M/)
+			bit12 = "1"
+		else
+			bit12 = "0"
+		end
+		op_code.gub!(/M|A/,"Y")
+		bit12 + @op[op_code]
+	end
+
+
+	def gen_instruction(asm)
+		/([AMD]{0,3})=/.match(asm)
+		dest3 = @dest[$1] || '000' #get the dest code or if nill sets it to 000
+		#/(J[GTEQNL]{2})/
 
 	end
 end
