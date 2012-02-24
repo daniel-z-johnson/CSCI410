@@ -3,7 +3,7 @@ class Cline
 	def ininialize
 
 		@dest = {
-			'nil'  => '000',
+			nil    => '000',
 			'M'    => '001',
 			'D'    => '010',
 			'A'    => '100',
@@ -24,7 +24,7 @@ class Cline
 			'JMP' => '111'
 		}
 
-		@op = {
+		@comp = {
 			nil   => '000000',
 			'0'   => '101010',
 			'1'   => '111111',
@@ -49,27 +49,34 @@ class Cline
 	end
 
 	def jump_bits(jjj)
+		unless @jump.include[jjj]
+			puts "Incorrect jump code #{jjj}"
+			exit
+		end
 		@jump[jjj]
+	end
 
 	def dest_bits(ddd)
+		unless @dest.include[ddd]
+			puts "Incorrect jump code #{ddd}"
+			exit
+		end
 		@dest[ddd]
 	end
 
-	def op_bits(op_code)
-		if op_bits.index(/M/)
+	def comp_bits(comp_code)
+		if comp_code.index(/M/)
 			bit12 = "1"
 		else
 			bit12 = "0"
 		end
-		op_code.gub!(/M|A/,"Y")
-		bit12 + @op[op_code]
+		comp_code.gub!(/M|A/,"Y")
+		unless @comp.include[comp_code]
+			puts "Incorrect comp code #{comp_code}. An A or M will show as a Y"
+			exit
+		end
+		bit12 + @comp[comp_code]
 	end
 
 
-	def gen_instruction(asm)
-		/([AMD]{0,3})=/.match(asm)
-		dest3 = @dest[$1] || '000' #get the dest code or if nill sets it to 000
-		#/(J[GTEQNL]{2})/
-
-	end
 end

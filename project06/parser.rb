@@ -14,6 +14,8 @@ class Parser
 		f2name = ARGV[0].gsub(/\.asm$/,".hack")
 		#puts "generated #{f2name}"
 		hack = File.new(f2name, "w")
+		@a = Aline.new
+		@c = Cline.new
 	end
 
 	def generate_sybols
@@ -23,16 +25,26 @@ class Parser
 			if valid
 				line_num += 1
 			elsif /$(\w*)/.match(i)
-				#add_address_symbol($1,line_num)
+				a.add_address_symbol($1,line_num)
 			end
 
 		end
 	end
 
 	def isValid?(line)
-		if /^\s*\/\/|$(\w*)/.match(line)
+		line.strip!
+		if /^\/\//.match(line)
 			puts line
-			return false 
+			return false
+		elsif /@(\W*)/.match(line)
+			puts "matched #{$1}"
+			return true
+		elsif /([AMD]{1,3}=)?([AMD+-10]{1,3});?(J[GTENQMP]{1,2})?/.match(line)
+			puts "matched #{$1} 2 #{$2} 3 #{$3}"
+			return true
+
+		else
+			puts "Invalid Instruction or comment, #{lien}"
 		end
 
 	end
