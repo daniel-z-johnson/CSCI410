@@ -24,7 +24,7 @@ class Parser
 			i.strip! #I enjoy strippers huray, but it makes the regular expressions easier
 			if isValid?(i)
 				line_num += 1
-			elsif /^\(([a-zA-Z0-9_.]*)\)/.match(i)
+			elsif /^\(([a-zA-Z0-9_.$]*)\)/.match(i)
 				a.add_address_symbol($1,line_num+1)
 			end
 
@@ -39,22 +39,22 @@ class Parser
 			i.gsub!(/\/\/.*/,'')
 			i.strip!
 			machine_code = nil
-			if /^@/.match(i)
+			if a_struct(i)
 				machine_code = @a.instruction(i)
-			elsif /([AMD]{1,3}=)?([AMD+-10!&\|]{1,3})(;J[GTENQMPL]{1,2})?/.match(i) and not /^\(([a-zA-Z0-9_.]*)\)/.match(i)
+			elsif c_struct(i)
 				/([AMD]{1,3}=)?([AM&D+-10!\|]{1,3})(;J[GTENQMPL]{1,2})?/.match(i)
 				dest = $1
 				comp = $2
 				jump = $3
 				dest.gsub!(/\=/,'') if dest
 				jump.gsub!(/;/,'') if jump
-				puts "start"
-				puts i
-				p  dest
-				p  comp
-				p  jump
-				puts "end"
-				puts
+				# puts "start"
+				# puts i
+				# p  dest
+				# p  comp
+				# p  jump
+				#puts "end"
+				#puts
 				machine_code = '111' +  @c.comp_bits(comp) + @c.dest_bits(dest) + @c.jump_bits(jump)
 			end
 			@hack.write(machine_code + "\n") if machine_code
@@ -65,17 +65,17 @@ class Parser
 	def isValid?(line)
 		line.gsub!(/\/\/.*/,'')
 		line.strip!
-		if line == "" or /^\(([a-zA-Z0-9_.]*)\)/.match(line)
-			puts "#{line} bla"
+		if line == "" or l_struct(line)
+			#puts "#{line} bla"
 			#puts "nil2" if line == "" or line == nil
 			return false
 
-		elsif /@([a-zA-Z0-9_.]*)/.match(line)
-			puts "matched #{$1}"
+		elsif a_struct(line)
+			#puts "matched #{$1}"
 			return true
-		elsif /([AMD]{1,3}=)?([AMD&+-10!\|]{1,3})(;J[GTENQMPL]{1,2})?/.match(line) and not /^\(([a-zA-Z0-9_.]*)\)/.match(line)
+		elsif c_struct(line)
 			#$1.gsub!("=","") if $1
-			puts "matched 1 #{$1} 2 #{$2} 3 #{$3}"
+			#puts "matched 1 #{$1} 2 #{$2} 3 #{$3}"
 			unless @c.valid?($1,$2,$3)
 				puts "Invalid C instruction #{line}"
 				exit
@@ -87,6 +87,18 @@ class Parser
 			exit
 		end
 
+	end
+
+	def c_struct(struct)
+		return /([AMD]{1,3}=)?([AMD&+-10!\|]{1,3})(;J[GTENQMPL]{1,2})?/.match(struct)
+	end
+
+	def a_struct(struct)
+		return /@([a-zA-Z0-9_.$]*)/.match(struct)
+	end
+
+	def l_struct(struct)
+		return /^\(([a-zA-Z0-9_.$]*)\)/.match(struct)
 	end
 
 end

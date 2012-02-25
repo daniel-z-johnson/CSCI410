@@ -75,6 +75,7 @@ class Cline
 		# 	puts "Incorrect comp code #{comp_code}. An A or M will show as a Y"
 		# 	exit
 		# end
+		p comp_code
 		bit12 + @comp[comp_code]
 	end
 
@@ -82,9 +83,6 @@ class Cline
 		comp.gsub!(/M|A/,"Y") if comp
 		dest.gsub!(/\=/,'') if dest
 		jump.gsub!(/;/,'') if jump
-		p dest
-		p comp
-		p jump
 		return (@dest.has_key?(dest) and @comp.has_key?(comp) and @jump.has_key?(jump))
 	end
 
