@@ -33,6 +33,7 @@ end
 
 p = Parser.new(ARGV[0])
 p.generate_sybols
+p.gen_hack
 
 #=begin tests to make sure a_line is working
 # a = Aline.new

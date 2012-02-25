@@ -59,14 +59,12 @@ class Aline
 	end
 
 	def instruction(asm)
-		if /@[0-9]*\w*/.match(asm)
-			puts "In valid a instruction #{asm}"
-		end
-		/@([0-9]*)/.match(asm)
+		
+		/@([0-9]*)$/.match(asm)
 		if $1 != ""
 			intstruct = '0' + toBin15($1.to_i)
 		else
-			/@(\w*)/.match(asm)
+			/@([a-zA-Z0-9_.]*)/.match(asm)
 			intstruct = '0' + testHash($1)
 		end
 		intstruct

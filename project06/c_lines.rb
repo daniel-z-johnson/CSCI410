@@ -1,6 +1,6 @@
 class Cline
-	attr_accessor :dest, :op, :jump
-	def ininialize
+	attr_accessor :dest, :comp, :jump
+	def initialize
 
 		@dest = {
 			nil    => '000',
@@ -49,34 +49,43 @@ class Cline
 	end
 
 	def jump_bits(jjj)
-		unless @jump.include[jjj]
-			puts "Incorrect jump code #{jjj}"
-			exit
-		end
+		# unless @jump.include[jjj]
+		# 	puts "Incorrect jump code #{jjj}"
+		# 	exit
+		# end
 		@jump[jjj]
 	end
 
 	def dest_bits(ddd)
-		unless @dest.include[ddd]
-			puts "Incorrect jump code #{ddd}"
-			exit
-		end
+		# unless @dest.include[ddd]
+		# 	puts "Incorrect jump code #{ddd}"
+		# 	exit
+		# end
 		@dest[ddd]
 	end
 
 	def comp_bits(comp_code)
-		if comp_code.index(/M/)
+		if /M/.match(comp_code)
 			bit12 = "1"
 		else
 			bit12 = "0"
 		end
-		comp_code.gub!(/M|A/,"Y")
-		unless @comp.include[comp_code]
-			puts "Incorrect comp code #{comp_code}. An A or M will show as a Y"
-			exit
-		end
+		comp_code.gsub!(/M|A/,"Y") if comp_code
+		# unless @comp.include[comp_code]
+		# 	puts "Incorrect comp code #{comp_code}. An A or M will show as a Y"
+		# 	exit
+		# end
 		bit12 + @comp[comp_code]
 	end
 
+	def valid?(dest,comp,jump)
+		comp.gsub!(/M|A/,"Y") if comp
+		dest.gsub!(/\=/,'') if dest
+		jump.gsub!(/;/,'') if jump
+		p dest
+		p comp
+		p jump
+		return (@dest.has_key?(dest) and @comp.has_key?(comp) and @jump.has_key?(jump))
+	end
 
 end
