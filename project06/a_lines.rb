@@ -60,11 +60,12 @@ class Aline
 
 	def instruction(asm)
 		
-		/@([0-9]*)$/.match(asm)
+		/@([0-9]*)/.match(asm)
 		if $1 != ""
 			intstruct = '0' + toBin15($1.to_i)
 		else
-			/@([a-zA-Z0-9_.]*)/.match(asm)
+			/@(.*)/.match(asm)
+			puts "#{$1} #{@mem_hash[$1]}"
 			intstruct = '0' + testHash($1)
 		end
 		intstruct

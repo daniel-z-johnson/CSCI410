@@ -24,8 +24,8 @@ class Parser
 			i.strip! #I enjoy strippers huray, but it makes the regular expressions easier
 			if isValid?(i)
 				line_num += 1
-			elsif /^\(([a-zA-Z0-9_.$]*)\)/.match(i)
-				a.add_address_symbol($1,line_num+1)
+			elsif l_struct(i)
+				a.add_address_symbol(@sym,line_num)
 			end
 
 		end
@@ -41,7 +41,7 @@ class Parser
 			machine_code = nil
 			if a_struct(i)
 				machine_code = @a.instruction(i)
-			elsif c_struct(i)
+			elsif c_struct(i) and not l_struct(i)
 				@dest.gsub!(/\=/,'') if @dest
 				@jump.gsub!(/;/,'') if @jump
 				# puts "start"
@@ -69,7 +69,7 @@ class Parser
 		elsif a_struct(line)
 			#puts "matched #{$1}"
 			return true
-		elsif c_struct(line)
+		elsif c_struct(line) and not l_struct(line)
 			#$1.gsub!("=","") if $1
 			#puts "matched 1 #{$1} 2 #{$2} 3 #{$3}"
 			unless @c.valid?(@dest,@comp,@jump)
@@ -94,14 +94,15 @@ class Parser
 	end
 
 	def a_struct(struct)
-		/@([a-zA-Z0-9_.$]*)/.match(struct)
+		/@(.*)/.match(struct)
 
-		return /@([a-zA-Z0-9_.$]*)/.match(struct)
+		return /@(.+)/.match(struct)
 	end
 
 	def l_struct(struct)
+		/^\((.+)\)/.match(struct)
 		@sym = $1
-		return /^\(([a-zA-Z0-9_.$]*)\)/.match(struct)
+		return /^\((.+)\)/.match(struct)
 	end
 
 end
