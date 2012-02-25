@@ -2,7 +2,7 @@ require "a_lines"
 require "c_lines"
 
 class Parser
-	attr_accessor :c_com, :a_comm, :valid, :a, :c
+	attr_accessor :c_com, :a_comm, :valid, :a, :c, :comp, :dest, :jump, :sym
 
 	def initialize(file_name)
 		begin
@@ -42,12 +42,8 @@ class Parser
 			if a_struct(i)
 				machine_code = @a.instruction(i)
 			elsif c_struct(i)
-				/([AMD]{1,3}=)?([AM&D+-10!\|]{1,3})(;J[GTENQMPL]{1,2})?/.match(i)
-				dest = $1
-				comp = $2
-				jump = $3
-				dest.gsub!(/\=/,'') if dest
-				jump.gsub!(/;/,'') if jump
+				@dest.gsub!(/\=/,'') if @dest
+				@jump.gsub!(/;/,'') if @jump
 				# puts "start"
 				# puts i
 				# p  dest
@@ -55,7 +51,7 @@ class Parser
 				# p  jump
 				#puts "end"
 				#puts
-				machine_code = '111' +  @c.comp_bits(comp) + @c.dest_bits(dest) + @c.jump_bits(jump)
+				machine_code = '111' +  @c.comp_bits(@comp) + @c.dest_bits(@dest) + @c.jump_bits(@jump)
 			end
 			@hack.write(machine_code + "\n") if machine_code
 				
@@ -76,7 +72,7 @@ class Parser
 		elsif c_struct(line)
 			#$1.gsub!("=","") if $1
 			#puts "matched 1 #{$1} 2 #{$2} 3 #{$3}"
-			unless @c.valid?($1,$2,$3)
+			unless @c.valid?(@dest,@comp,@jump)
 				puts "Invalid C instruction #{line}"
 				exit
 			end
@@ -90,14 +86,21 @@ class Parser
 	end
 
 	def c_struct(struct)
+		/([AMD]{1,3}=)?([AMD&+-10!\|]{1,3})(;J[GTENQMPL]{1,2})?/.match(struct)
+		@comp = $2
+		@dest = $1
+		@jump = $3
 		return /([AMD]{1,3}=)?([AMD&+-10!\|]{1,3})(;J[GTENQMPL]{1,2})?/.match(struct)
 	end
 
 	def a_struct(struct)
+		/@([a-zA-Z0-9_.$]*)/.match(struct)
+
 		return /@([a-zA-Z0-9_.$]*)/.match(struct)
 	end
 
 	def l_struct(struct)
+		@sym = $1
 		return /^\(([a-zA-Z0-9_.$]*)\)/.match(struct)
 	end
 
