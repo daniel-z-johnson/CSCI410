@@ -1,5 +1,5 @@
 class Code_Writer
-	attr_accessor :out
+	attr_accessor :out, :command, :segment, :value
 	def initialize(output)
 		out = File.new(output,'w')
 
@@ -11,6 +11,7 @@ class Code_Writer
 	def write_arithmetic(command)
 	end
 
-	def write_push_pop(command)
+	def write_push_pop(command, seg, arg)
+		
 	end
 end

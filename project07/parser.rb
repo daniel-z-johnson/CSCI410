@@ -30,9 +30,10 @@ class Parser
 		@command_type = $1
 		@arg1 = $2
 		@arg2 = $3
+	end
 
-
-
+	def is_Maths?
+		/add|sub|eq|gt|lt|neg|and|or|not/.match(@command_type)
 	end
 
 
