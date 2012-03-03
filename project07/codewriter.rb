@@ -1,5 +1,8 @@
 class Code_Writer
+	attr_accessor :out
 	def initialize(output)
+		out = File.new(output,'w')
+
 	end
 
 	def setFileName(in_file_name)
