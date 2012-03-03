@@ -2,30 +2,31 @@ require 'parser'
 require 'codewriter'
 
 class File_handl
-	attr_accessor :parser, :code_writer
+	attr_accessor :parser, :code_writer, :in_file
 	def initialize(argv_in)
 		if File.directory?(argv_in)
 			given_dir = argv_in
 			given_dir += "/" unless /\/$/.match  given_dir
-			given_dir += /\w*\/$/.match(given_dir).to_s.gsub(/\//,"") + ".asm"
+			out_dir = given_dir + /\w*\/$/.match(given_dir).to_s.downcase.gsub(/\//,"") + ".asm"
 
-			init_code_writer(given_dir)
+			init_code_writer(out_dir)
 
 			Dir.foreach(argv_in) do |file|
 
 
 				next unless vm_file?(file)
-				puts "VM file found #{file}"
+				in_file = given_dir + file
+				Parser.new(in_file, @code_writer)
 			end
 		elsif vm_file?(argv_in)
 			begin
-				p argv_in
-				in_file = File.new(argv_in, "r")
+				argv_in
+				in_file = argv_in
 				init_code_writer(argv_in.gsub(/\.vm$/,".asm"))
+				Parser.new(in_file, @code_writer)
 				in_file.close
 			rescue => e
 				puts e
-				puts "File #{argv_in} does not exits"
 				exit
 			end
 				
@@ -36,8 +37,9 @@ class File_handl
 
 	end
 
+
 	def init_code_writer(file_name)
-		@code_Writer = Code_Writer.new(file_name)
+		@code_writer = Code_Writer.new(file_name)
 	end
 
 	def vm_file?(file)
