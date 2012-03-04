@@ -1,9 +1,9 @@
 require 'erb'
 class Code_Writer
-	attr_accessor :out, :command, :segment, :value, :jummp_count
+	attr_accessor :out, :command, :segment, :value, :jump_count
 	def initialize(output)
 		@out = File.new(output,'w')
-		@jummp_count = 0 #I always count from zero now, it confuses the pants of people around me, useful at parties
+		@jump_count = 0 #I always count from zero now, it confuses the pants off people around me, useful at parties
 	end
 
 	def setFileName(in_file_name)
@@ -11,6 +11,7 @@ class Code_Writer
 
 	def write_arithmetic(command)
 		#puts "In write_arithmetic #{command}" #part of a debug at one point
+		@command = command
 		command += ".erb"
 		begin
 			f1 = File.new(command, "r")
@@ -23,11 +24,11 @@ class Code_Writer
 			@out.write erb.result(binding)
 		end
 		@out.write "\n" #to make sure next line starts on a new line, had problems iwth that
-		@jummp_count += 1 if increase_jump?
+		@jump_count += 1 if increase_jump?
 	end
 
 	def increase_jump?
-		/eq|jt|lt/.match(command)
+		/eq|gt|lt/.match(@command)
 	end
 
 	def write_push_pop(command, seg, arg)
@@ -44,5 +45,6 @@ class Code_Writer
 			erb = ERB.new(i)
 			@out.write erb.result(binding)
 		end
+		@out.write "\n"
 	end
 end

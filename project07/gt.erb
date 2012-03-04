@@ -5,11 +5,11 @@ D=M
 A=A-1
 D=D-M
 @greater<%= @jump_count %>
-D;JGT
+D;JLT
 D=0
 @end<%= @jump_count %>
 0;JMP
-(equal<%= @jump_count %>)
+(greater<%= @jump_count %>)
 D=-1
 (end<%= @jump_count %>)
 @SP
