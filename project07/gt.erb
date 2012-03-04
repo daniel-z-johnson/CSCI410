@@ -4,8 +4,8 @@ A=M
 D=M
 A=A-1
 D=D-M
-@equal<%= @jump_count %>
-D;JEQ
+@greater<%= @jump_count %>
+D;JGT
 D=0
 @end<%= @jump_count %>
 0;JMP

@@ -4,12 +4,12 @@ A=M
 D=M
 A=A-1
 D=D-M
-@equal<%= @jump_count %>
-D;JEQ
+@less<%= @jump_count %>
+D;JLT
 D=0
 @end<%= @jump_count %>
 0;JMP
-(equal<%= @jump_count %>)
+(less<%= @jump_count %>)
 D=-1
 (end<%= @jump_count %>)
 @SP

@@ -22,6 +22,7 @@ class Code_Writer
 			erb = ERB.new(i)
 			@out.write erb.result(binding)
 		end
+		@out.write "\n" #to make sure next line starts on a new line, had problems iwth that
 		@jummp_count += 1 if increase_jump?
 	end
 
