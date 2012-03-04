@@ -1,0 +1,17 @@
+@SP
+M=M-1
+A=M
+D=M
+A=A-1
+D=D-M
+@equal<%= @jump_count %>
+D;JEQ
+D=0
+@end<%= @jump_count %>
+0;JMP
+(equal<%= @jump_count %>)
+D=-1
+(wnd<%= @jump_count %>)
+@SP
+A=M-1
+M=D

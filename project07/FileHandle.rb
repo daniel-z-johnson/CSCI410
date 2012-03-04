@@ -7,7 +7,7 @@ class File_handl
 		if File.directory?(argv_in)
 			given_dir = argv_in
 			given_dir += "/" unless /\/$/.match  given_dir
-			out_dir = given_dir + /\w*\/$/.match(given_dir).to_s.downcase.gsub(/\//,"") + ".asm"
+			out_dir = given_dir + /\w*\/$/.match(given_dir).to_s.gsub(/\//,"") + ".asm"
 
 			init_code_writer(out_dir)
 
