@@ -15,6 +15,7 @@ class Code_Writer
 		command += ".erb"
 		begin
 			f1 = File.new(command, "r")
+			@out.write("//#{@command}\n")
 		rescue => e
 			puts e
 			exit
@@ -37,6 +38,7 @@ class Code_Writer
 		@value = arg
 		begin
 			f1 = File.new(file, "r")
+			@out.write("//#{command} #{seg} #{arg}\n")
 		rescue => e
 			puts e
 			exit
