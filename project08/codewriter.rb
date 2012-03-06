@@ -13,6 +13,7 @@ class Code_Writer
 		#puts "In write_arithmetic #{command}" #part of a debug at one point
 		@command = command
 		command += ".erb"
+		command = "templates/" + commands
 		begin
 			f1 = File.new(command, "r")
 			@out.write("//#{@command}\n")
@@ -35,6 +36,7 @@ class Code_Writer
 	def write_push_pop(command, seg, arg)
 		#puts "In write_push_pop #{command} #{seg} #{arg}" #same here, look at write_arithmetic
 		file = command + "_" + seg + ".erb"
+		file = "templates/" + file
 		@value = arg
 		begin
 			f1 = File.new(file, "r")
