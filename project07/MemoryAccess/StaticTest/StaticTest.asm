@@ -22,3 +22,61 @@ M=M+1
 A=M-1
 M=D
 
+//pop static 8
+@SP
+M=M-1
+A=M
+D=M
+@24
+M=D
+//pop static 3
+@SP
+M=M-1
+A=M
+D=M
+@19
+M=D
+//pop static 1
+@SP
+M=M-1
+A=M
+D=M
+@17
+M=D
+//push static 3
+@19
+D=M
+@SP
+M=M+1
+A=M-1
+M=D
+//push static 1
+@17
+D=M
+@SP
+M=M+1
+A=M-1
+M=D
+//sub
+@SP
+M=M-1
+A=M
+D=M
+A=A-1
+M=M-D
+
+//push static 8
+@24
+D=M
+@SP
+M=M+1
+A=M-1
+M=D
+//add
+@SP
+M=M-1
+A=M
+D=M
+A=A-1
+M=D+M
+
