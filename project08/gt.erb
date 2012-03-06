@@ -1,0 +1,17 @@
+@SP
+M=M-1
+A=M
+D=M
+A=A-1
+D=D-M
+@greater<%= @jump_count %>
+D;JLT
+D=0
+@end<%= @jump_count %>
+0;JMP
+(greater<%= @jump_count %>)
+D=-1
+(end<%= @jump_count %>)
+@SP
+A=M-1
+M=D
