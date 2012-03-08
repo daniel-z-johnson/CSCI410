@@ -27,6 +27,7 @@ class Parser
 				elsif label?
 					c_class.write_label @arg1
 				elsif if_goto?
+					c_class.write_if_goto @arg1
 				elsif goto?
 					c_class.write_goto @arg1
 				else

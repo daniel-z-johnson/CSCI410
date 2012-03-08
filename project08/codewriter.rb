@@ -67,7 +67,7 @@ class Code_Writer
 		@out.puts "//if-goto destination"
 		@out.puts "@SP"
 		@out.puts "M=M-1"
-		@out.puts "A=M+1"
+		@out.puts "A=M"
 		@out.puts "D=M"
 		@out.puts "@#{destination}"
 		@out.puts "D;JNE"

@@ -114,6 +114,13 @@ D=M
 M=M+1
 A=M-1
 M=D
+//if-goto destination
+@SP
+M=M-1
+A=M
+D=M
+@LOOP_START
+D;JNE
 //push local 0
 @LCL
 D=M
