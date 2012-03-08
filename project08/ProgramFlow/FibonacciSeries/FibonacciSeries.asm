@@ -118,6 +118,13 @@ D=M
 M=M+1
 A=M-1
 M=D
+//if-goto destination
+@SP
+M=M-1
+A=M
+D=M
+@COMPUTE_ELEMENT
+D;JNE
 @END_PROGRAM
 0;JMP
 //label COMPUTE_ELEMENT
