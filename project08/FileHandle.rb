@@ -24,7 +24,7 @@ class File_handl
 				in_file = argv_in
 				init_code_writer(argv_in.gsub(/\.vm$/,".asm"))
 				Parser.new(in_file, @code_writer)
-				in_file.close
+				#in_file.close
 			rescue => e
 				puts e
 				exit

@@ -7,17 +7,18 @@ class Code_Writer
 	end
 
 	def setFileName(in_file_name)
+		@file = in_file_name
 	end
 
 	def write_arithmetic(command)
 		#puts "In write_arithmetic #{command}" #part of a debug at one point
 		@command = command
 		command += ".erb"
-		command = "templates/" + commands
+		command = "templates/" + command
 		begin
 			f1 = File.new(command, "r")
-			@out.write("//#{@command}\n")
-		rescue => e
+			@out.puts("//#{@command}")
+		rescue => e 
 			puts e
 			exit
 		end
@@ -51,4 +52,25 @@ class Code_Writer
 		end
 		@out.write "\n"
 	end
+
+	def write_label(label)
+		@out.puts "//label #{label}"
+		@out.puts "(#{label})"
+	end
+
+	def write_goto(goto)
+		@out.puts "@#{goto}"
+		@out.puts "0;JMP"
+	end
+
+	def write_if_goto(destination)
+		@out.puts "//if-goto destination"
+		@out.puts "@SP"
+		@out.puts "M=M-1"
+		@out.puts "A=M+1"
+		@out.puts "D=M"
+		@out.puts "@#{destination}"
+		@out.puts "D;JNE"
+	end
+
 end

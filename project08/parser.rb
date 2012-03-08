@@ -24,8 +24,14 @@ class Parser
 					c_class.write_arithmetic(@command_type)
 				elsif push_or_pops?
 					c_class.write_push_pop(@command_type, @arg1, @arg2)
+				elsif label?
+					c_class.write_label @arg1
+				elsif if_goto?
+				elsif goto?
+					c_class.write_goto @arg1
 				else
 					puts "VM does not reconize command #{i} currently"
+					exit
 				end
 			end
 
@@ -37,7 +43,8 @@ class Parser
 		@command_type = nil             #great website that meets all regular explressions needs
 		@arg1 = nil
 		@arg2 = nil
-		/(\w*)\s*(\w*)\s*(\d*)/.match(commnad)
+		/(\S*)\s*(\S*)\s*(\d*)/.match(commnad)
+		#puts $1
 		@command_type = $1
 		@arg1 = $2
 		@arg2 = $3
@@ -50,6 +57,18 @@ class Parser
 
 	def push_or_pops?
 		/push|pop/.match(@command_type)
+	end
+
+	def label?
+		/label/.match(@command_type)
+	end
+
+	def goto?
+		/goto/.match(@command_type)
+	end
+
+	def if_goto?
+		/if-goto/.match(@command_type)
 	end
 
 
