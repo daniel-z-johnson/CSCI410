@@ -30,8 +30,14 @@ class Parser
 					c_class.write_if_goto @arg1
 				elsif goto?
 					c_class.write_goto @arg1
+				elsif function?
+					c_class.write_func(@arg1, @arg2)
+				elsif call?
+					
+				elsif return?
+					c_class.write_return
 				else
-					puts "VM does not reconize command #{i} currently"
+					puts "VM does not reconize command '#{i}' currently"
 					exit
 				end
 			end
@@ -70,6 +76,18 @@ class Parser
 
 	def if_goto?
 		/if-goto/.match(@command_type)
+	end
+
+	def function?
+		/function/.match(@command_type)
+	end
+
+	def call?
+		/call/.match(@command_type)
+	end
+
+	def return?
+		/return/.match(@command_type)
 	end
 
 

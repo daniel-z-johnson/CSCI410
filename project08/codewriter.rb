@@ -73,4 +73,62 @@ class Code_Writer
 		@out.puts "D;JNE"
 	end
 
+	def write_func(f,k) # The book uses k
+		@out.puts "//#{f} #{k}"
+		@out.puts "(#{f})"
+		k.to_i.times do |i|
+			@out.puts write_push_pop "push", "constant", "0"
+		end
+	end
+
+	def write_return
+		@out.puts "//return"
+		# @out.puts "@LCL"
+		# @out.puts "D=M"
+		# @out.puts "@07"
+		# @out.puts "M=D"
+		@out.puts write_push_pop "pop", "argument", "0" #//put result on top of stack
+
+		#used // dou
+		@out.puts "@ARG" #restore SP
+		@out.puts "D=M+1"
+		@out.puts "@SP"
+		@out.puts "M=D"
+
+		@out.puts "@LCL"
+		@out.puts "M=M-1"
+		@out.puts "A=M"
+		@out.puts "D=M"
+		@out.puts "@THAT"
+		@out.puts "M=D"
+
+		@out.puts "@LCL"
+		@out.puts "M=M-1"
+		@out.puts "A=M"
+		@out.puts "D=M"
+		@out.puts "@THIS"
+		@out.puts "M=D"
+
+		@out.puts "@LCL"
+		@out.puts "M=M-1"
+		@out.puts "A=M"
+		@out.puts "D=M"
+		@out.puts "@ARG"
+		@out.puts "M=D"
+
+
+		@out.puts "@LCL"
+		@out.puts "M=M-1"
+		@out.puts "A=M"
+		@out.puts "D=M"
+		@out.puts "@LCL"
+		@out.puts "M=D"
+		@out.puts "M=M+1"
+
+		@out.puts "@LCL"
+		@out.puts "M=M-1"
+		@out.puts "A=M"
+		@out.puts "0;JMP"
+
+	end
 end
