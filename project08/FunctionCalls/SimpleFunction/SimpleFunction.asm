@@ -8,7 +8,6 @@ M=M+1
 A=M-1
 M=D
 
-1
 //push constant 0
 @0
 D=A
@@ -17,7 +16,6 @@ M=M+1
 A=M-1
 M=D
 
-1
 //push local 0
 @LCL
 D=M
@@ -101,7 +99,6 @@ D=M
 A=A+1
 A=M
 M=D
-1
 @ARG
 D=M+1
 @SP

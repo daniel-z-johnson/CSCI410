@@ -77,7 +77,7 @@ class Code_Writer
 		@out.puts "//#{f} #{k}"
 		@out.puts "(#{f})"
 		k.to_i.times do |i|
-			@out.puts write_push_pop "push", "constant", "0"
+			write_push_pop "push", "constant", "0"
 		end
 	end
 
@@ -87,7 +87,7 @@ class Code_Writer
 		# @out.puts "D=M"
 		# @out.puts "@07"
 		# @out.puts "M=D"
-		@out.puts write_push_pop "pop", "argument", "0" #//put result on top of stack
+		write_push_pop "pop", "argument", "0" #//put result on top of stack
 
 		#used // dou
 		@out.puts "@ARG" #restore SP
@@ -116,7 +116,6 @@ class Code_Writer
 		@out.puts "@ARG"
 		@out.puts "M=D"
 
-
 		@out.puts "@LCL"
 		@out.puts "M=M-1"
 		@out.puts "A=M"
@@ -129,6 +128,50 @@ class Code_Writer
 		@out.puts "M=M-1"
 		@out.puts "A=M"
 		@out.puts "0;JMP"
+
+	end
+
+	def write_call(name, args)
+		@out.puts "@return#{jump_count}"
+		@out.puts "D=A"
+		@out.puts "@SP"
+		@out.puts "M=M+1"
+		@out.puts "A=M-1"
+		@out.puts "M=D"
+
+		form_return_stack "LCL"
+		form_return_stack "ARG"
+		form_return_stack "THIS"
+		form_return_stack "THAT"
+
+		@out.puts "@#{args}"
+		@out.puts "D=A"
+		@out.puts "@5"
+		@out.puts "D=D+A"
+		@out.puts "@SP"
+		@out.puts "D=M-D"
+		@out.puts "@ARG"
+		@out.puts "M=D"
+		@out.puts "D=A"
+		@out.puts "@LCL"
+		@out.puts "M=D"
+		write_goto name
+		
+
+
+
+
+		@out.puts "(return#{@jump_count})"
+		@jump_count += 1
+	end
+
+	def form_return_stack(place)
+		@out.puts "@#{place}"
+		@out.puts "D=M"
+		@out.puts "@SP"
+		@out.puts "M=M+1"
+		@out.puts "A=M-1"
+		@out.puts "M=D"
 
 	end
 end

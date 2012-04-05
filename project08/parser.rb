@@ -33,7 +33,7 @@ class Parser
 				elsif function?
 					c_class.write_func(@arg1, @arg2)
 				elsif call?
-					
+					c_class.write_call(@arg1, @arg2)
 				elsif return?
 					c_class.write_return
 				else
