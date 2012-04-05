@@ -24,3 +24,6 @@ outFile = File.new(out_name,"w")
 for i in infile
 	outFile.write i
 end
+
+infile.close
+outFile.close
