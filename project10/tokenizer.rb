@@ -6,13 +6,24 @@ class Tokens
 	end
 	#takes the in put file name and generates output and opens input for reading
 	def tokenize(in_name) 
+		multi_line = false
 		@in_file = File.new(in_name, "r");
 		out_name = in_name.gsub /.jack$/, "Tgen.xml"
 		@out_file = File.new(out_name,"w")
 		@out_file.puts "<tokens>"		
 		for i in @in_file
-			i.gsub! /(\{|\}|\(|\)|\[|\]|\.|,|;|\+|-|\*|\/|&|\||<|>|=|~)/, ' \1 '
+			if multi_line
+				next unless i.match /\*\//
+				i.gsub! /.*\*\//, ''
+				multi = false
+			end
+			if i.match /\/\*/
+				i.gsub! /\/\*.*/, ''
+				multi = true
+			end
 			i.gsub! /\/\/.*/, ''
+			i.gsub! /(\{|\}|\(|\)|\[|\]|\.|,|;|\+|-|\*|\/|&|\||<|>|=|~)/, ' \1 '
+			p i
 			i.strip! #ba chica wa wa
 			i.scan /\S+/ do |j|
 				type =  token_type j
@@ -33,7 +44,7 @@ class Tokens
 	def token_type(token)
 		return "keyword" if @keyword.include? token
 		return "symbol" if @symbol.include? token
-		return "intConstant" if token.match /^\d+$/
+		return "integerConstant" if token.match /^\d+$/
 		return "stringConstant" if token.match /".*"/
 		return "identifier" if token.match /([a-zA-Z]|_)([A-Za-z]|\d|_)*/
 		puts token
