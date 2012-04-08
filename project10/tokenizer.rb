@@ -12,14 +12,18 @@ class Tokens
 		@out_file = File.new(out_name,"w")
 		@out_file.puts "<tokens>"		
 		for i in @in_file
+			if i.match /\/\*/
+				if  i.match /\*\//
+					i.gsub! /\/\*.*\*\//, ''
+				else
+					i.gsub! /.*\*\//
+					multi = true
+				end
+			end
 			if multi_line
 				next unless i.match /\*\//
-				i.gsub! /.*\*\//, ''
+				i.gsub! /.*\*\//
 				multi = false
-			end
-			if i.match /\/\*/
-				i.gsub! /\/\*.*/, ''
-				multi = true
 			end
 			i.gsub! /\/\/.*/, ''
 			i.gsub! /(\{|\}|\(|\)|\[|\]|\.|,|;|\+|-|\*|\/|&|\||<|>|=|~)/, ' \1 '

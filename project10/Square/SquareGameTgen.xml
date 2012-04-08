@@ -1,4 +1,7 @@
 <tokens>
+<symbol> /  </symbol>
+<symbol> *  </symbol>
+<symbol> *  </symbol>
 <symbol> *  </symbol>
 <identifier> The  </identifier>
 <identifier> SquareDance  </identifier>
@@ -140,6 +143,20 @@
 <keyword> return  </keyword>
 <symbol> ;  </symbol>
 <symbol> }  </symbol>
+<symbol> /  </symbol>
+<symbol> *  </symbol>
+<symbol> *  </symbol>
+<identifier> Starts  </identifier>
+<identifier> the  </identifier>
+<identifier> game  </identifier>
+<symbol> .  </symbol>
+<identifier> Handles  </identifier>
+<identifier> inputs  </identifier>
+<identifier> from  </identifier>
+<identifier> the  </identifier>
+<identifier> user  </identifier>
+<identifier> that  </identifier>
+<identifier> controls  </identifier>
 <symbol> *  </symbol>
 <identifier> the  </identifier>
 <identifier> square  </identifier>

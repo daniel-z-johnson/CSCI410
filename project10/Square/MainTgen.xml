@@ -1,4 +1,7 @@
 <tokens>
+<symbol> /  </symbol>
+<symbol> *  </symbol>
+<symbol> *  </symbol>
 <symbol> *  </symbol>
 <identifier> The  </identifier>
 <identifier> Main  </identifier>
