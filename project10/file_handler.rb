@@ -16,7 +16,7 @@ unless File.directory?(ARGV[0])
 		puts "File #{ARGV[0]} doesn't seem to exit"
 		exit
 	end
-
+	puts "Hello"
 	tokenizer.tokenize(ARGV[0])
 
 end

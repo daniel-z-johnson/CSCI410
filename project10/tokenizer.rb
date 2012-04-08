@@ -1,24 +1,73 @@
 class Tokens
-	#nothing to init, why doesn't ruby allow use of just init instead od initialize?
+	# why doesn't ruby allow use of just init instead od initialize?
 	def initialize
+		@keyword = %w{class constructor function method field static var int char boolean void true false null this let do if else while return}
+		@symbol = %w?{ } ( ) [ ] . , ; + - * / & | < > = ~?
 	end
 	#takes the in put file name and generates output and opens input for reading
 	def tokenize(in_name) 
-		in_file = File.new(in_name, "r");
+		@in_file = File.new(in_name, "r");
 		out_name = in_name.gsub /.jack$/, "Tgen.xml"
-		out_file = File.new(out_name,"w")
-		
-		for i in in_file
-			p i
+		@out_file = File.new(out_name,"w")
+		@out_file.puts "<tokens>"		
+		for i in @in_file
+			i.gsub! /(\{|\}|\(|\)|\[|\]|\.|,|;|\+|-|\*|\/|&|\||<|>|=|~)/, ' \1 '
+			i.gsub! /\/\/.*/, ''
+			i.strip! #ba chica wa wa
+			i.scan /\S+/ do |j|
+				type =  token_type j
+				j.gsub! /&/, '&amp;'
+				j.gsub! /"/, ''
+				j.gsub! />/, '&gt;'
+				j.gsub! /</, '&lt;'
+				write_toke type, j
+			end
 		end
 
+		@out_file.puts "</tokens>"		
 		#SHould always close even if it is done at program's terminations
-		in_file.close() 
-		out_file.close()
+		@in_file.close() 
+		@out_file.close()
 	end
 
+	def token_type(token)
+		return "keyword" if @keyword.include? token
+		return "symbol" if @symbol.include? token
+		return "intConstant" if token.match /^\d+$/
+		return "stringConstant" if token.match /".*"/
+		return "identifier" if token.match /([a-zA-Z]|_)([A-Za-z]|\d|_)*/
+		puts token
+		return "error"
+	end
 
+	def write_toke(type, n)
+		@out_file.puts "<#{type}> #{n}  </#{type}>"
+	end
+=begin
+	def int(n)
+		write_toke "integerConstant", n
+	end
 
+	def stringConstant(s)
+		write_toke "stringConstant", s
+	end
+
+	def identifier(i)
+		write_toke "identifier", i
+	end
+	
+	def keyword(k)
+		write_toke "keyword", k
+	end
+
+	def symbol(s)
+		write_toke "keyword", s
+	end
+
+	def error(e)
+		puts "Something is wrong with #{e}"
+	end
+=end
 end
 
 
