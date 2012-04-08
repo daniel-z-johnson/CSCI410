@@ -1,5 +1,5 @@
 class Tokens
-	# why doesn't ruby allow use of just init instead od initialize?
+	# why doesn't ruby allow use of just init instead of initialize?
 	def initialize
 		@keyword = %w{class constructor function method field static var int char boolean void true false null this let do if else while return}
 		@symbol = %w?{ } ( ) [ ] . , ; + - * / & | < > = ~?
@@ -11,23 +11,25 @@ class Tokens
 		out_name = in_name.gsub /.jack$/, "Tgen.xml"
 		@out_file = File.new(out_name,"w")
 		@out_file.puts "<tokens>"		
-		for i in @in_file
-			if i.match /\/\*/
-				if  i.match /\*\//
-					i.gsub! /\/\*.*\*\//, ''
-				else
-					i.gsub! /.*\*\//
-					multi = true
-				end
-			end
+		for i in @in_file #none of these regexes are readable or debugable, never again
+			i.gsub! %r!/\*.*\*/!, '' #incase a multiline format is only used for a single line after code on same line
 			if multi_line
-				next unless i.match /\*\//
-				i.gsub! /.*\*\//
-				multi = false
+				p "de #{i}"
+				next unless i.match %r!\*/!
+				i.gsub! %r!.*\*/!, ''
+				multi_line = false
 			end
-			i.gsub! /\/\/.*/, ''
+			
+			if i.match %r!/\*!
+				p "re #{i}"
+				i.gsub! %r!/\*.*!, ''
+				multi_line = true
+			end
+			
+			# hahahahaha %r!! makes finding comments easier because it looks neater and is eaiser to read
+			i.gsub! %r!//.*!, ''
 			i.gsub! /(\{|\}|\(|\)|\[|\]|\.|,|;|\+|-|\*|\/|&|\||<|>|=|~)/, ' \1 '
-			p i
+			#p i
 			i.strip! #ba chica wa wa
 			i.scan /\S+/ do |j|
 				type =  token_type j

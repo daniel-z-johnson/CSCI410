@@ -1,23 +1,4 @@
 <tokens>
-<symbol> /  </symbol>
-<symbol> *  </symbol>
-<symbol> *  </symbol>
-<symbol> *  </symbol>
-<identifier> The  </identifier>
-<identifier> Main  </identifier>
-<keyword> class  </keyword>
-<identifier> initializes  </identifier>
-<identifier> a  </identifier>
-<identifier> new  </identifier>
-<identifier> Square  </identifier>
-<identifier> Dance  </identifier>
-<identifier> game  </identifier>
-<identifier> and  </identifier>
-<identifier> starts  </identifier>
-<identifier> it  </identifier>
-<symbol> .  </symbol>
-<symbol> *  </symbol>
-<symbol> /  </symbol>
 <keyword> class  </keyword>
 <identifier> Main  </identifier>
 <symbol> {  </symbol>
