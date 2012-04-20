@@ -14,14 +14,14 @@ class Tokens
 		for i in @in_file #none of these regexes are readable or debugable, never again
 			i.gsub! %r!/\*.*\*/!, '' #incase a multiline format is only used for a single line after code on same line
 			if multi_line
-				p "de #{i}"
+				#p "de #{i}"
 				next unless i.match %r!\*/!
 				i.gsub! %r!.*\*/!, ''
 				multi_line = false
 			end
 			
 			if i.match %r!/\*!
-				p "re #{i}"
+				#p "re #{i}"
 				i.gsub! %r!/\*.*!, ''
 				multi_line = true
 			end

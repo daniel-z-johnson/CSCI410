@@ -1,6 +1,8 @@
 require "./tokenizer"
+require "./syntax"
 
 tokenizer = Tokens.new
+syntax = Syntax.new
 
 unless ARGV.size == 1
 	puts "ERROR Expecting one argument got #{ARGV.size} arguments instead"
@@ -16,8 +18,9 @@ unless File.directory?(ARGV[0])
 		puts "File #{ARGV[0]} doesn't seem to exit"
 		exit
 	end
-	puts "Hello"
+	#puts "Hello"
 	tokenizer.tokenize(ARGV[0])
+	syntax.analize(ARGV[0])
 
 end
 
