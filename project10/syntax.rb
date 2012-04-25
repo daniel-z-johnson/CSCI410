@@ -77,6 +77,23 @@ class Syntax
 	end
 
 	def compile_sub
+		@out_file.puts "<subroutineDec>"
+			tok = @t.token_type @a
+			write_toke tok, @a
+			@a = @tokens.shift
+
+			tok = @t.token_type @a
+			write_toke tok, @a
+			@a = @tokens.shift
+
+			tok = @t.token_type @a
+			write_toke tok, @a
+			@a = @tokens.shift
+
+			unless @a == '('
+				puts "Expected ( got #{@a} instead"
+			end
+		@out_file.puts "</subroutineDec>"
 	end
 
 	def compile_param_list
