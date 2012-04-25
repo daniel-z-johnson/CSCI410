@@ -93,10 +93,21 @@ class Syntax
 			unless @a == '('
 				puts "Expected ( got #{@a} instead"
 			end
+			tok = @t.token_type @a
+			write_toke tok, @a
+			@a = @tokens.shift
+			compile_param_list
 		@out_file.puts "</subroutineDec>"
 	end
 
 	def compile_param_list
+		@out_file.puts "<parameterList>"
+		until @a == ')'
+			tok = @t.token_type @a
+			write_toke tok, @a
+			@a = @tokens.shift
+		end		
+		@out_file.puts "</parameterList>"
 	end
 
 	def compile_var_dec
