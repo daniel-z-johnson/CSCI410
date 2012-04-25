@@ -97,6 +97,43 @@ class Syntax
 			write_toke tok, @a
 			@a = @tokens.shift
 			compile_param_list
+
+
+			tok = @t.token_type @a #end of param list ')'
+			write_toke tok, @a
+			@a = @tokens.shift
+
+			#start of sub's body
+			@out_file.puts "<subroutineBody>"
+			unless @a == '{'
+				puts "hello"
+				puts "expected { got #{@a} instead"
+			end
+			tok = @t.token_type @a
+			write_toke tok, @a
+			@a = @tokens.shift
+
+
+			while @a.match /var/
+				compile_var_dec
+			end
+
+			@out_file.puts "<statements>"
+			until @a.match %r!}!
+				case @a
+					when "do" then compile_do
+					when "let" then compile_let
+					when "if" then compile_if
+					when "while" then compile_while
+					when "return" then compile_return
+					else puts "Do not reconize #{@a}"	
+				end
+			end
+			@out_file.puts "<statements>"
+
+
+
+
 		@out_file.puts "</subroutineDec>"
 	end
 
@@ -111,6 +148,16 @@ class Syntax
 	end
 
 	def compile_var_dec
+		@out_file.puts "<varDec>"
+		until @a.match %r{;}
+			tok = @t.token_type @a
+			write_toke tok, @a
+			@a = @tokens.shift
+		end
+		tok = @t.token_type @a
+		write_toke tok, @a
+		@a = @tokens.shift
+		@out_file.puts "</varDec>"
 	end
 
 	def compile_statement
@@ -120,6 +167,8 @@ class Syntax
 	end
 
 	def compile_let
+		@out_file.puts "<letStatement>"
+		@out_file.puts "</letStatement>"
 	end
 
 	def compile_while

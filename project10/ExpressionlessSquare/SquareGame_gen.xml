@@ -21,5 +21,7 @@
 <symbol> (  </symbol>
 <parameterList>
 </parameterList>
-</subroutineDec>
-</class>
+<symbol> )  </symbol>
+<subroutineBody>
+<symbol> {  </symbol>
+<statements>
