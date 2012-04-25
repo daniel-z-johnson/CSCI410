@@ -2,7 +2,7 @@ require './tokenizer'
 
 class Syntax
 	def initialize
-		t = Tokens.new
+		@t = Tokens.new
 		@tokens = [] #will be like a queue
 	end
 
@@ -14,14 +14,14 @@ class Syntax
 		for i in @in_file 
 			i.gsub! %r!/\*.*\*/!, '' 
 			if multi_line
-				p "de #{i}"
+				#p "de #{i}"
 				next unless i.match %r!\*/!
 				i.gsub! %r!.*\*/!, ''
 				multi_line = false
 			end
 			
 			if i.match %r!/\*!
-				p "re #{i}"
+				#p "re #{i}"
 				i.gsub! %r!/\*.*!, ''
 				multi_line = true
 			end
@@ -35,7 +35,37 @@ class Syntax
 				@tokens << j #forming queue
 			end
 		end
-		p @tokens
+		#p @tokens
+		compile_class
+	end
+
+	def compile_class
+		@out_file.puts "<class>"
+		a = @tokens.shift
+		until a == '{'
+			tok = @t.token_type(a)
+			write_toke tok, a
+			a = @tokens.shift
+		end
+		tok = @t.token_type(a)
+		write_toke tok, a
+		while @tokens[0].match /static|field/
+			compile_class_var_dec
+		end
+		while @tokens[0].match /constructor|function|method/
+			compile_sub
+		end
+		a = @tokens.shift
+		unless a == '{'
+			puts "error expected } but got #{a} instead"
+		end
+		@out_file.puts "</class>"
+	end
+
+	def compile_var_dec
+	end
+
+	def compile_sub
 	end
 
 	def write_toke(type, n)

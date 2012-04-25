@@ -29,6 +29,8 @@ if File.directory?(ARGV[0])
 	Dir.foreach(".") do |file|
 		if file.match /.jack$/
 			tokenizer.tokenize(file)
+			syntax.analize(file)
+
 		end
 	end
 end
