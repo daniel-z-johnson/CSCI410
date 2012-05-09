@@ -7,13 +7,19 @@
  * Memory operations library.
  */ 
 class Memory {
+    static int free;
+    static Array mem;
+
 
     /** Initializes memory parameters. */
     function void init() {
+        let free = 2048;
+        let mem = 0;
     }
 
     /** Returns the value of the main memory at this address. */
     function int peek(int address) {
+        return mem[address];
     }
 
     /** Sets the value of the main memory at this address
