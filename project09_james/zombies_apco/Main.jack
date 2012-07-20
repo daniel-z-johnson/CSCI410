@@ -1,0 +1,14 @@
+/*
+*This is the main class. It creates the game object and then starts the game.
+*/
+class Main {
+
+
+	function void main(){		
+		var Game game;
+		do game.start();
+		//do game.dispose();
+		return;
+	}
+
+}

@@ -1,0 +1,409 @@
+class Game{
+	//Global vars
+	static int wave, totalZombies;
+
+	/** Deallocates the object's memory. */
+   	method void dispose() {
+        	do player.dispose();
+        	do Memory.deAlloc(this);
+        	return;
+   	 }
+	
+	//Starts the game
+	method void start() {
+		
+		do title();
+		do splash();
+		do game();
+		do gameOver(); 
+		
+		return;
+
+	}	
+
+	//This will display the title screen
+
+	method void title() {
+			var int i;
+			var boolean end;
+			var char key;
+			let end = false;
+			let i = 0;
+			do Screen.clearScreen();
+			do Output.moveCursor(0,0);
+			while(i < 3){
+				do Output.println();
+				let i = i + 1;
+			}
+			
+			do Output.printString("                    Zombie Apocalypse");
+			do Output.println();
+			do Output.printString("                       Press s");
+		
+			//Waiting for the user to press s
+			while(~end) {
+				let key = Keyboard.keyPressed();
+				if(key = 83) {
+					let	end = true;
+				}
+			}
+		
+		return;
+	}
+	
+	// This is method will drive the game
+	method void game() {
+		//All the vars we need for the game
+	 	var Player player;
+		var int direction;
+		var int zDir;
+		var char key;
+		var Array zombie;
+		var boolean for_anything;
+		var Zombie z;
+		var boolean killed;
+		var int turn; // alternates between player moving and zombies
+		var int amount;
+		var int i;
+		var boolean exit;	
+		//var int totalZombies;
+		//var int wave;
+		var int zombiesInWave; //Number of zombies in the current wave
+		var int zombiesKilled; // Number of zombies killed in the current wave
+		var int startingDir;
+		var int numGames;
+		var int playedGames;		
+		
+		let wave = 0;
+		let totalZombies = 0;
+		let killed = false;
+		do Screen.clearScreen();		
+		do drawBoard();
+		let player = Player.new(229,132,16);	
+		
+		while(~(killed)) {
+			//do Output.moveCursor(0,0);
+			let wave = wave + 1;
+			
+			//Creating the array with zombies in it
+			let zombiesInWave = numZoms(wave);
+			let zombie = Array.new(zombiesInWave);
+			
+			//Creating the 1st 4 zombies
+			let z = Zombie.new(0);	
+			do z.activate();
+			let zombie[0] = z;			
+
+			let z = Zombie.new(1);	
+			do z.activate();
+			let zombie[1] = z;			
+
+			let z = Zombie.new(2);	
+			do z.activate();
+			let zombie[2] = z;			
+
+			let z = Zombie.new(3);	
+			do z.activate();
+			let zombie[3] = z;			
+			
+			let i = 4;			
+			while(i < zombiesInWave) {	
+				let startingDir = mod(i,4);		
+				let z = Zombie.new(startingDir);
+				//do z.activate();
+				let zombie[i] = z;
+				
+				let i = i + 1;								
+			} 	
+				let turn = 1;	
+				//do Output.printString("made the zombies");
+				//This is the main loop that drives the game
+				while (~killed & ~(zombiesKilled = zombiesInWave)) {
+					if(mod(turn,2) = 0) {
+						//do Output.printString("zombies");
+						//It is the zombies turn to move
+						let i = 0;
+						while (i < zombiesInWave){
+							let z = zombie[i];// I want Ruby, Java or even C++, not jack
+							let for_anything = z.draw(); // Python, C#, visual basic to name a few more languages that are infintly better than Jack
+							if (for_anything){// Dammit Jack as a whole new meaning for me now
+								do z.move(); // Also jack shit has a new meaning as well
+								}
+								// Or even the ++
+								let i = i + 1;
+							}
+
+
+							
+
+
+						}
+						else {
+							//The player moves
+							// waits for a key to be pressed.
+							while (key = 0) {
+								let key = Keyboard.keyPressed();		            
+							}
+
+						if (key = 81) {
+						    let exit = true;
+						}
+						if (key = 131) {
+							let direction = 512;
+						    do player.shootUp();
+						}
+						if (key = 133) {
+							let direction = -512;
+						    do player.shootDown();
+						}
+						if (key = 130) {
+							let direction = 1;
+						   do player.shootLeft();
+						}
+						if (key = 132) {
+							let direction = -1;
+						    do player.shootRight();
+						}
+						
+						//The space bar was pressed so lets kill some zombies!!!
+						if(key = 32) {
+							let i =  0;
+							while(i < zombiesInWave) {
+								let z = zombie[i];
+								let for_anything = z.draw();
+								let zDir = z.getMovement();
+								if(z.draw() & direction = zDir) {
+									if(z.getActive()){
+									
+										do z.death_of_a_zombie();
+										let zombiesKilled = zombiesKilled + 1;
+										let i = zombiesInWave - 1;
+										let i = 0;
+										while (i < zombiesInWave){
+											let z = zombie[i];
+											let for_anything = z.getActive(); 
+											if (~for_anything){
+											do z.activate(); 
+											let i =  zombiesInWave;
+											}
+										let i = i + 1;
+										}
+
+									}
+						
+								}
+
+								let i = i + 1;
+							}
+
+						}  
+						
+						// waits for the key to be released.
+						while (~(key = 0)) {
+							let key = Keyboard.keyPressed();              
+						}
+					}
+					
+					//seeing if the player has been eaten
+					let i = 0;
+					while(i < zombiesInWave){
+						let z = zombie[i];
+						let for_anything = z.playerDeath();
+						if(for_anything){
+							let killed = true;
+						}
+						let i = i + 1;
+					}
+
+					
+
+					let turn = turn + 1;
+					/*do Output.moveCursor(0,0);
+					do Output.printString("Wave: ");
+					do Output.printInt(wave);
+					do Output.println();
+					do Output.printString("Zombies in Wave: ");
+					do Output.printInt(zombiesInWave);
+					do Output.println();
+					do Output.printString("Zombies Killed: ");
+					do Output.printInt(zombiesKilled);
+					do Output.printString("  ");/**/
+			}
+			
+			//deallocate the zombie array so we save memory
+			let i = 0;
+			while(i < zombiesInWave) {
+				let z = zombie[i];
+				do z.dispose();
+				let i = i + 1;
+			}
+
+			do zombie.dispose();				
+
+			
+			let totalZombies = totalZombies + zombiesKilled;
+			let zombiesKilled = 0;
+		}
+		 do player.dispose();	      
+		return;
+	}
+	
+	//This method will be called when the game ends. 
+	//It will show how many waves you survived and the number of zombies you killed.
+	method void gameOver() { 
+		var int i;
+		var char key;
+		do Screen.clearScreen();
+		do Output.moveCursor(0,0);
+		let i = 0;
+		while (i < 3){
+			do Output.println();
+			let i = i + 1;
+		}
+		do Output.printString("                            Game Over");
+		do Output.println();
+		do Output.printString("                 You have Joined the Undead Hord");
+		do Output.println();
+		do Output.printString("                      You Survived ");
+		do Output.printInt(wave);
+		do Output.printString(" Waves");
+		do Output.println();
+		do Output.printString("                      You Killed ");
+		do Output.printInt(totalZombies);
+		do Output.printString(" Zombies");
+		let i = 0;
+		while (i < 7){
+			do Output.println();
+			let i = i + 1;
+		}
+
+		do Output.printString("                       Thanks for Playing");
+		return;
+	}
+
+	//This method will tell the user how play the game
+	method void intructions() {
+		var char key;
+		do Screen.clearScreen();
+		do Output.moveCursor(0,0);
+		do Output.println();
+		do Output.printString("Instructions");
+		do Output.println();
+		do Output.printString("             Arrow keys, turns the player in the direction of ");
+		do Output.println();
+		do Output.printString("             the arrow keys.");
+		do Output.println();
+		do Output.println();
+		do Output.printString("             Space bar to shoot in the direction you are facing");
+		do Output.println();
+		do Output.println();
+		do Output.println();
+		do Output.printString("             Press Spacebar to return to the main menu");
+		
+		while(~(key=32)){
+			let key = Keyboard.keyPressed();
+		}
+		return;
+
+	}
+
+	//This method displays the splash screen.
+	//From this screen, the user can either start the game or pull up the intructions
+	method void splash() {
+		var boolean end;
+		var char key;	
+		var boolean redraw;
+		let end = false;
+		let redraw = true;
+		//do story();
+		//Waiting for the user to press s or i
+			while(~end) {
+				let key = Keyboard.keyPressed();
+				if(redraw){
+					do story();
+					let redraw = false; 
+				}
+				
+				while(key = 0) {
+					let key = Keyboard.keyPressed();
+					if(key = 83) {
+						return;
+					}
+					if(key = 73) {
+						do intructions();
+						let redraw = true;
+
+					}
+				}
+				//do Screen.clearScreen();
+			}
+
+		return;
+
+	}
+
+	//This is the background story for the game
+	method void story(){
+		do Screen.clearScreen();
+		do Output.moveCursor(0,0);
+		do Output.println();
+		do Output.printString("				Zombie Apocalypse");
+		do Output.println();
+		do Output.printString("				The unthinkble has happen. We are not sure how, but zombies have overrun the world.");
+		do Output.println();
+		do Output.printString("				At first, no one thought it was true. Maybe it was just some riot over something silly.");
+		do Output.println();
+		do Output.printString("				The news started to show more and more footage and thats when we knew something was wrong.");
+		do Output.println();
+		do Output.printString("				Soon, whole cities where being over run. It was just not here but all over the world.");
+		do Output.println();
+		do Output.printString("				The goverments of the world were powerless to stop the hordes as they sweeped across the land.");
+		do Output.println();
+		do Output.printString("				That was a few years ago. You have read The Zombie Survival Guide and you have lived by it ever since.");
+		do Output.println();
+		do Output.printString("				Even with all your knowledge and careful planning, you made that one and maybe last mistake.");
+		do Output.println();
+		do Output.printString("				You were out in search of food when you got trapped in a building near your hideout.");
+		do Output.println();
+		do Output.printString("				You hear the horde getting ever closer. You decide to make a last stand....");
+		do Output.println();
+		do Output.println();
+		do Output.printString("				Push S to start Push I for intructions");
+		do Output.println();
+		return;
+
+	}
+
+
+	method void drawBoard() {
+	
+	do Screen.drawLine(0,110,215,110);
+	do Screen.drawLine(215,0,215,110);
+	do Screen.drawLine(260,0,260,110);
+	do Screen.drawLine(260,110,510,110);
+	do Screen.drawLine(0,160,215,160);
+	do Screen.drawLine(215,160,215,255);
+	do Screen.drawLine(260,160,260,255);
+	do Screen.drawLine(260,160,510,160);
+	return;
+	}
+
+	method int numZoms(int n){
+		let n = ((n*n) + (4*n) + 4);
+		if (n > 100){
+			let n = 100;
+		}
+		return n;
+	}
+
+	//the mod function created Taylor Wacker
+	method int mod(int a, int b) {
+
+		var int div, prod, mod;
+		let div = a/b;
+		let prod = div * b;
+		let mod = a - prod;
+		return mod;
+	}
+	
+}

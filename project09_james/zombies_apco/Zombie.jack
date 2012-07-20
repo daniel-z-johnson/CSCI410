@@ -1,0 +1,170 @@
+class Zombie {
+	field int direction;
+	field int movement;
+	field boolean active;
+	field boolean alive;
+	field int movesTaken;
+	field int deathOccurs;
+
+
+	//Constructs a new zombie with a starting location and movement twards the player
+	constructor Zombie new(int directionfrom){
+		//directionfrom 0 = right, 1 = up, 2 = left, 3 = down
+		if (directionfrom = 0){//right
+			let direction = 20158;
+			let movement = -1;
+			let deathOccurs = 15;
+		}
+
+		if (directionfrom = 1){//up
+			let direction = 16398;
+			let movement = 512;
+			let deathOccurs = 8;
+		}
+
+		if (directionfrom = 2){//left
+			let direction = 20128;
+			let movement = 1;
+			let deathOccurs = 14;
+		}
+
+		if (directionfrom = 3){//down
+			let direction = 23758;
+			let movement = -512;
+			let deathOccurs = 6;
+		}
+		// Zombie is alive but not yet visable to the playder or moving at all
+		let movesTaken = 0;
+		let active = false;
+		let alive = true;
+		return this;
+	}
+
+
+	// draw Zombo draws the zombie, go figure
+	method void drawZombo(){
+		var int address;
+		let address = direction;
+		do Memory.poke(address, 32767);
+		let address = address + 32;
+		do Memory.poke(address, 16385);
+		let address = address + 32;
+		do Memory.poke(address, 20485);
+		let address = address + 32;
+		do Memory.poke(address, 18441);
+		let address = address + 32;
+		do Memory.poke(address, 17425);
+		let address = address + 32;
+		do Memory.poke(address, 16929);
+		let address = address + 32;
+		do Memory.poke(address, 16385);
+		let address = address + 32;
+		do Memory.poke(address, 16385);
+		let address = address + 32;
+		do Memory.poke(address, 16385);
+		let address = address + 32;
+		do Memory.poke(address, 16385);
+		let address = address + 32;
+		do Memory.poke(address, 17441);
+		let address = address + 32;
+		do Memory.poke(address, 19025);
+		let address = address + 32;
+		do Memory.poke(address, 20873);
+		let address = address + 32;
+		do Memory.poke(address, 24581);
+		let address = address + 32;
+		do Memory.poke(address, 16385);
+		let address = address + 32;
+		do Memory.poke(address, 32767);
+		return;
+	}
+
+	//Earses the zombie on screen, the name shoyld have been fairly self explanitory
+	method void deDrawZombo(){
+		var int address;
+		let address = direction;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		let address = address + 32;
+		do Memory.poke(address, 0);
+		return;
+	}
+
+	//Addances the zombie twards the player, again method name should have explain it well enough
+	method void move(){
+		let movesTaken = movesTaken + 1;
+		do deDrawZombo();
+		let direction = direction + movement;
+		do drawZombo();
+		return;
+
+	}
+
+	//Zombie will now be drawn on screen
+	method void activate(){
+		let active = true;
+		return;
+	}
+
+	//Checks to see if the zombie is active
+	method boolean getActive(){
+		return active;
+	}
+
+	//zombie is not longer alive and no longer a threat to the player
+	method void death_of_a_zombie(){
+		let alive = false;
+		do deDrawZombo();
+		return;
+	}
+
+	//SHould rename it but in ruby it would have been draw?, checks to see if zombie should be drawn
+	// zombies are only drawn if they are alive and active
+	method boolean draw(){
+		return (active & alive);
+	}
+
+	//So we can tell when the player kills a zombie
+	method int getMovement(){
+		return movement;
+	}
+
+	method boolean playerDeath(){
+		return (deathOccurs < movesTaken);
+	}
+
+	/* Deallocates the object's memory. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }/* Brains*/
+
+
+}

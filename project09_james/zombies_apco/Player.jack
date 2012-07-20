@@ -1,0 +1,112 @@
+/***
+*This class will be a graphical repersention of the player on the screen.
+*You stand in the middle of the screen and shoot at the zombies as they come onto the screen
+*/
+
+class Player {
+
+	// Location on the screen
+    field int x, y;
+
+	 // The size of the player
+    field int size;
+
+	// The center of the player
+	field int cx, cy;
+
+
+	constructor Player new(int Ax, int Ay, int Asize) {
+        	let x = Ax;
+        	let y = Ay;
+        	let size = Asize;
+			let cx = 237;
+			let cy = 140;
+       		do draw();
+        	return this;
+    }
+
+	 /** Draws the player on the screen. */
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+	
+	//The following four methods are used to draw the gun in the direction the player is facing
+
+	method void shootUp() {
+	
+		do Screen.setColor(false);
+		//clearing all of the lines
+		do Screen.drawLine(cx,cy-8,cx,cy-16); //up
+		do Screen.drawLine(cx,cy+8,cx,cy+16); //down
+		do Screen.drawLine(cx+8,cy,cx+16,cy); //right
+		do Screen.drawLine(cx-8,cy,cx-16,cy); //left
+		do Screen.setColor(true);
+		do draw();
+		do Screen.drawLine(cx,cy,cx,cy-16);
+		do Sys.wait(2);
+		return;
+		
+	}
+	
+	method void shootDown() {
+	
+		do Screen.setColor(false);
+		//clearing all of the lines
+		do Screen.drawLine(cx,cy-8,cx,cy-16); //up
+		do Screen.drawLine(cx,cy+8,cx,cy+16); //down
+		do Screen.drawLine(cx+8,cy,cx+16,cy); //right
+		do Screen.drawLine(cx-8,cy,cx-16,cy); //left
+		do Screen.setColor(true);
+		do draw();
+		do Screen.drawLine(cx,cy,cx,cy+16);
+		do Sys.wait(2);
+		return;
+		
+	}
+
+	method void shootLeft() {
+	
+		do Screen.setColor(false);
+		//clearing all of the lines
+		do Screen.drawLine(cx,cy-8,cx,cy-16); //up
+		do Screen.drawLine(cx,cy+8,cx,cy+16); //down
+		do Screen.drawLine(cx+8,cy,cx+16,cy); //right
+		do Screen.drawLine(cx-8,cy,cx-16,cy); //left
+		do Screen.setColor(true);
+		do draw();
+		do Screen.drawLine(cx,cy,cx-16,cy);
+		do Sys.wait(2);
+		return;
+		
+	}
+
+	method void shootRight() {
+	
+		do Screen.setColor(false);
+		//clearing all of the lines
+		do Screen.drawLine(cx,cy-8,cx,cy-16); //up
+		do Screen.drawLine(cx,cy+8,cx,cy+16); //down
+		do Screen.drawLine(cx+8,cy,cx+16,cy); //right
+		do Screen.drawLine(cx-8,cy,cx-16,cy); //left
+		do Screen.setColor(true);
+		do draw();
+		do Screen.drawLine(cx,cy,cx+16,cy);
+		do Sys.wait(2);
+		return;
+		
+	}
+	
+
+	 /** Deallocates the object's memory. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+
+
+
+
+}
